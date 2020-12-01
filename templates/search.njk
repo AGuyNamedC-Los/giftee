@@ -1,0 +1,63 @@
+{% extends "base.njk" %}
+
+{% block metaStuff%}
+	<title>Search</title>
+	<link href="gift-ee.css" type="text/css" rel="stylesheet">
+	<link href="menu.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+	<section class="main-content">
+		<div class="input-box">
+			<input type="text" id="search-bar" name="searchText" required>
+			<label><i class="fas fa-search"></i> Search For Users</label>
+		</div>
+	</section>
+
+	<section class="main-content">
+		<div id="usernameList">
+			
+		</div>
+	</section>
+{% endblock %}
+
+{% block script %}
+<script>
+	var search = document.getElementById('search-bar');
+	var usernameListElem = document.getElementById("usernameList");
+	var usernames = [('{{usernames}}')]
+	
+	document.getElementById("search-bar").value = "";
+
+	async function getUserNames(searchText) {
+		var matches = usernames.filter(username => {
+			const regex = new RegExp(`^${searchText}`,`gi`);
+			return username.match(regex);
+		});
+
+		if(searchText.length == 0) {
+			matches = [];
+			usernameListElem.innerHTML = " ";
+			return;
+		}
+		outputHTML(matches);
+	}
+
+	const outputHTML = matches => {
+		if(matches.length > 0) {
+			var html = matches.map(match => 
+				`
+				<div class="search-result">
+					<a href="${match}">${match}</a> 
+				</div>
+				`
+				).join(" ");
+			usernameList.innerHTML = html;
+		} else {
+			usernameList.innerHTML = "no users with that name";
+		}
+	}
+
+	search.addEventListener('input', () => getUserNames(search.value));
+</script>
+{% endblock %}

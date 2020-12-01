@@ -1,0 +1,165 @@
+{% extends "base.njk" %}
+
+{% block metaStuff %}
+	<title>Profile</title>
+{% endblock %}
+
+{% block main %}
+<section class="main-content content-2">
+    <h1>Add a gift to your gift list</h1>
+        <div id="add-gift">
+            <div id="gift-top"></div>
+            <form id="add-gift-form" action="added_gift_status" method="POST">
+                <div class="input-box">
+                    <input type="text" name="itemName" autocomplete="off" required>
+                    <label>Item Name</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="notes" autocomplete="off" required>
+                    <label>Notes</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="price" autocomplete="off" required>
+                    <label>Price</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="quantity" autocomplete="off" required>
+                    <label>Quantity</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="size" autocomplete="off" required>
+                    <label>Size</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="storeLink" autocomplete="off" required>
+                    <label>Store Link</label>
+                </div>
+                <input id="add-gift-btn" type="button" onclick="addGift(this.form)" value="Add Gift">
+            </form>
+            <div id="gift-bottom">Add Gift</div>
+        </div>
+</section>
+<section class="main-content content-3">
+    <div class="gift-list gift-list-private">
+        {% for i in range(0, giftList.length) -%}
+            <div class="gift gift-private">
+                <i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}}, 'private')"></i>
+                <h2>{{giftList[i].itemName}}</h2>
+                <div class="gift-content gift-content-private">
+                    <div class="gift-form gift-form-private">
+                        <form id="save-changes-form" action="save_changes_status" method="POST">
+                            <div class="input-box">
+                                <input type="text" name="itemName" value="{{giftList[i].itemName}}" autocomplete="off" required>
+                                <label>Item Name</label>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="notes" value="{{giftList[i].notes}}" autocomplete="off" required>
+                                <label>Notes</label>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="price" value="{{giftList[i].price}}" autocomplete="off" required>
+                                <label>Price</label>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="quantity" value="{{giftList[i].quantity}}" autocomplete="off" required>
+                                <label>Quantity</label>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="size" value="{{giftList[i].size}}" autocomplete="off" required>
+                                <label>Size</label>
+                            </div>
+                            <div class="input-box">
+                                <input type="text" name="storeLink" value="{{giftList[i].storeLink}}" autocomplete="off" required>
+                                <label>Store Link</label>
+                            </div>
+                            <p hidden><input type="number" name="index" value="{{i}}"></p>
+                            <button class="apply-changes-btn" onclick="applyChangesToCurrGift(this.form)" type="button">Apply Changes</button>
+                        </form>
+                        <form id="delete-gift-form" action="deleted_gift_status" method="POST">
+                            <p hidden><input type="number" name="index" value="{{i}}"></p>
+                            <button class="delete-btn" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {%- endfor %}
+    </div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script>
+    var privateGiftList = document.getElementsByClassName("gift-list-private")[0];
+    var privateGifts = privateGiftList.getElementsByClassName("gift-private");
+    document.getElementById("gift-bottom").addEventListener("click", () => expandAddGiftForm());    // to open the add gift form
+
+    function openGift(index, privacy) {
+        let giftContent = (privacy === "private") ? privateGifts[index].getElementsByClassName("gift-content")[0] : publicGifts[index].getElementsByClassName("gift-content")[0];
+        let currGift = (privacy === "private") ? privateGifts[index] : publicGifts[index];
+        let giftContentHeight = giftContent.scrollHeight;
+        let currGiftHeight = currGift.scrollHeight;
+        currGift.style.height = currGiftHeight;
+
+        if(giftContent.style.visibility === "visible") {   // close the form
+            let newHeight = currGiftHeight - giftContentHeight;
+            giftContent.style.transition = "0s";
+            giftContent.style.opacity = 0;
+            giftContent.style.visibility = "hidden";
+            currGift.style.height = `${newHeight}px`;
+        } else {    // open the form
+            let newHeight = currGiftHeight;
+            currGift.style.height = `${newHeight}px`;
+            giftContent.style.transition = "2s ease";
+            giftContent.style.opacity = 1;
+            giftContent.style.visibility = "visible";
+        }
+    }
+
+    function expandAddGiftForm() {
+        let bottomOfGift = document.getElementById("gift-bottom");
+        let addGiftForm = document.getElementById("add-gift-form");
+        let giftFormHeight = addGiftForm.scrollHeight;
+
+        if(addGiftForm.style.visibility === "visible") {   // close the form
+            addGiftForm.style.transition = "0s";
+            addGiftForm.style.visibility = "hidden";
+            addGiftForm.style.opacity = 0;
+            bottomOfGift.style.marginTop = "0px";
+        } else {    // open the form
+            addGiftForm.style.transition = "2s ease";
+            addGiftForm.style.visibility = "visible";
+            addGiftForm.style.opacity = 1;
+            bottomOfGift.style.marginTop = giftFormHeight + "px";
+        }
+    }
+
+    function addGift(form) { form.submit(); }
+    function applyChangesToCurrGift(form) { form.submit(); }
+
+    /* EXPERIMENTAL AJAX BELOW */
+    function addGift2() {
+
+    }
+
+    function fetchJSONFile(path, callback) {
+        let httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function() {
+            if (httpRequest.readyState === 4) {
+                if (httpRequest.status === 200) {
+                    var data = JSON.parse(httpRequest.responseText);
+                    if (callback) callback(data);
+                }
+            }
+        };
+        httpRequest.open('GET', path);
+        httpRequest.send(); 
+    }
+
+    // this requests the file and executes a callback with the parsed result once it is available
+    // might have to put the usersDB inside of the templates folder but would then make it unsafe since it would allow it for users to view their own data
+    // even though user sensitive information is encrypted... might need to write to a file that contians only the user's giftlist
+    fetchJSONFile('giftList', function(data){
+        console.log(data);
+    });
+</script>
+{% endblock %}

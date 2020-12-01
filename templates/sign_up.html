@@ -1,0 +1,208 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="login_and_signup.css", type="text/css", rel="stylesheet">
+    <link rel="stylesheet", href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+    <title>Gifee Sign Up</title>
+</head>
+<body>
+    <main>
+        <a href="/"><img src="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png" alt="giftee-logo"></a>
+        <form id="signup-form" action="api/authenticate/sign_up_status" method="POST">
+            <h1>Sign Up</h1>
+            <h2>Create your Giftee account</h2>
+            <div class="input-box">
+                <input type="text" name="email" id="email" oninput="validEmail()" required>
+                <label>Email</label>
+                <p class="message">message</p>
+            </div>
+            <div class="input-box-group">
+                <div class="input-box">
+                    <input type="text" name="firstName" id="firstName" onblur="validFirstName()" required>
+                    <label>First Name</label>
+                    <p class="message">message</p>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="lastName" id="lastName" onblur="validLastName()" required>
+                    <label>Last Name</label>
+                    <p class="message">message</p>
+                </div>
+            </div>
+            <div class="input-box">
+                <input type="text" name="username" id="username" oninput="validUsername()" autocomplete="off" required>
+                <label>Username</label>
+                <p class="message">message</p>
+            </div>
+            <div class="input-box-group">
+                <div class="input-box">
+                    <input type="password" name="password" id="password" oninput="validPassword()" required>
+                    <label>Password</label>
+                    <p class="message">Use up to 8 characters with a mix of letters, numbers, and symbols</p>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="confirm" id="confirm" required>
+                    <label>Confirm</label>
+                    <p class="message">Use up to 8 characters with a mix of letters, numbers, and symbols</p>
+                </div>
+                <i class="far fa-eye-slash" onclick="showPassword()"></i>
+            </div>
+            <div class="input-box">
+                <input id="button" type="button" value="Sign Up" onclick="isFormValid()">
+            </div>
+        </form>
+    </main>
+</body>
+<script>
+    var defaultColor = "#dadce0";
+    var errorColor = "#E02950";
+    var hasEmail = false;
+    var hasFirstName = false;
+    var hasLastName = false;
+    var hasUsername = false;
+    var hasPassword = false;
+    var isPassVisible = false;
+    var currLabelTag = document.getElementsByTagName("label");
+    var currInputTag = document.getElementsByTagName("input");
+    var currMessageTag = document.getElementsByClassName("message");
+    var confirmInput = document.getElementById("confirm");
+
+    document.getElementById("signup-form").reset();     // so all text inside inputs are cleared on page refresh or load
+
+    function changeInputColor (index, message, isError) {
+        currLabelTag[index].style.color = (isError) ? errorColor : null;
+        currInputTag[index].style.border = (isError) ? `2px solid ${errorColor}` : null;
+        currMessageTag[index].innerHTML = `<i class="fas fa-exclamation-circle"></i>` + " " + message;
+        currMessageTag[index].style.color = (isError) ? `${errorColor}`: null;
+        currMessageTag[index].style.visibility = (isError) ? "visible" :"hidden";
+    }
+
+    function validEmail() {
+        let errorMessage = "";
+        var emailInput = document.getElementById("email").value;
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        hasEmail = re.test(emailInput);
+
+        if (hasEmail) {
+            hasEmail = true;
+            changeInputColor(0, "good", false);
+        } else {
+            hasEmail = false;
+            changeInputColor(0, "Please enter an email address", true);
+        }
+    }
+
+    function validFirstName() {
+        var firstNameInput = document.getElementById("firstName").value;
+        
+        if (firstNameInput != "") {
+            hasFirstName = true;
+            changeInputColor(1, "good", false);
+        } else {
+            hasFirstName = false;
+            changeInputColor(1, "Please enter a first name", true);
+        }
+    }
+
+    function validLastName() {
+        var lastNameInput = document.getElementById("lastName").value;
+        
+        if (lastNameInput != "") {
+            hasLastName = true;
+            changeInputColor(2, "good", false);
+        } else {
+            hasLastName = false;
+            changeInputColor(2, "Please enter a last name", true);
+        }
+    }
+
+    function validUsername() {
+        var usernameInput = document.getElementById("username").value;
+        let errorMessage = "good";
+
+        // let hasBadChars = /^(?=.*[!@#$%^&*()_+|~=`{}\\[\]:";'<>?,./-])/.test(passwordText);
+        let hasBadChars = /^(?=.*[`{}\\[\]:";',./-])/.test(usernameInput);
+        let hasSpaces = !/^[\S]+$/.test(usernameInput);
+        badUsername = false;
+
+        if (usernameInput.length < 3) { errorMessage = "Username needs at least 3 characters!"; badUsername = true; }
+        if (usernameInput.length > 40) { errorMessage = "Username can't exceed 30 characters!"; badUsername = true; }
+        if (hasBadChars) { errorMessage = `Username can't contain \` {} \\ [\] : " ; ' , . "`; badUsername = true; }
+        else if (hasSpaces) { errorMessage = "Username can't contain spaces"; badUsername = true;}
+
+        if (badUsername) {
+            hasUsername = false;
+            changeInputColor(3, errorMessage, true);
+        } else {
+            hasUsername = true;
+            changeInputColor(3, errorMessage, false);
+        }
+    }
+
+    function validPassword() {
+        let errorMessage = "good";
+        var passwordInput = document.getElementById("password").value;
+        // let hasBadChars = /^(?=.*[!@#$%^&*()_+|~=`{}\\[\]:";'<>?,./-])/.test(passwordText);
+        let hasBadChars = /^(?=.*[`{}\\[\]:";',./-])/.test(passwordInput);
+        let hasSpaces = !/^[\S]+$/.test(passwordInput);
+        let hasDigit = /^(?=.*\d)/.test(passwordInput);
+        let hasLowercase = /^(?=.*[a-z])/.test(passwordInput);
+        let hasUppercase = /^(?=.*[A-Z])/.test(passwordInput);
+        badPassword = false;
+
+        if (passwordInput.length < 8) { errorMessage = "password needs at least 8 characters!"; badPassword = true; }
+        if (passwordInput.length > 128) { errorMessage = "passwords can't exceed 128 characters!"; badPassword = true; }
+        if (hasBadChars) { errorMessage = `password can't contain \` {} \\ [\] : " ; ' , . "`; badPassword = true; }
+        else if (hasSpaces) { errorMessage = "password can't contain spaces"; badPassword = true;}
+        else if (!hasDigit) { errorMessage = "password must contain a digit!"; badPassword = true; }
+        else if (!hasLowercase) { errorMessage = "password must contain a lowercase letter"; badPassword = true; }
+        else if (!hasUppercase) { errorMessage = "password must contain a uppercase letter"; badPassword = true; }
+
+        if (badPassword) {
+            hasPassword = false;
+            changeInputColor(4, errorMessage, true);
+            currMessageTag[5].innerHTML = errorMessage;
+        } else {
+            hasPassword = true;
+            changeInputColor(4, errorMessage, false);
+            currMessageTag[5].innerHTML = errorMessage;
+        }
+    }
+
+    function showPassword() {
+        let eyeBall = document.getElementsByTagName("i")[0];
+        let passwordInputField = document.getElementById("password");
+
+        if (isPassVisible) {
+            eyeBall.className = "far fa-eye-slash";
+            passwordInputField.type = "password";
+            confirmInput.type = "password";
+            isPassVisible = false;
+        } else {
+            eyeBall.className = "far fa-eye";
+            passwordInputField.type = "text";
+            confirmInput.type = "text";
+            isPassVisible = true;
+        }
+    }
+
+    function isFormValid() {
+        let passwordInput = document.getElementById("password").value;
+        let confirmInput = document.getElementById("confirm").value;
+        if (passwordInput != confirmInput) {
+            changeInputColor(5, "the given passwords do not match", true);
+            return;
+        }
+
+        if (hasEmail && hasFirstName && hasLastName && hasUsername && hasPassword) {
+            document.getElementById("signup-form").submit();
+        } else {
+            validEmail();
+            validFirstName();
+            validLastName();
+            validUsername();
+            validPassword();
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,66 @@
+{% extends "base.njk" %}
+
+{% block metaStuff%}
+	<title>Search Result</title>
+	<link href="giftee.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block main%}
+<section class="main-content conent-4">
+	<div class="gift-list gift-list-public">
+		{% for i in range(0, giftList.length) -%}
+			<div class="gift gift-public">
+				<i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}})"></i>
+				<h2>{{giftList[i].itemName}}</h2>
+				<div class="gift-content gift-content-public">
+					<div class="input-box">
+						<input type="text" class="input-name" value="{{giftList[i].notes}}" readonly>
+						<label>NOTES</label>
+					</div>
+					<div class="input-box">
+						<input type="text" class="input-name" value="{{giftList[i].price}}" readonly>
+						<label>PRICE</label>
+					</div>
+					<div class="input-box">
+						<input type="text" class="input-name" value="{{giftList[i].quantity}}" readonly>
+						<label>QUANTITY</label>
+					</div>
+					<div class="input-box">
+						<input type="text" class="input-name" value="{{giftList[i].size}}" readonly>
+						<label>SIZE</label>
+					</div>
+					<a class="buy-btn" href="{{giftList[i].storeLink}}" target="_blank">BUY</a>
+				</div>
+			</div>
+		{%- endfor %}
+	</div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script>
+	var publicGiftList = document.getElementsByClassName("gift-list-public")[0];
+	var publicGifts = publicGiftList.getElementsByClassName("gift-public");
+	function openGift(index) {
+		let giftContent = publicGifts[index].getElementsByClassName("gift-content")[0];
+		let currGift = publicGifts[index];
+		let giftContentHeight = giftContent.scrollHeight;
+		let currGiftHeight = currGift.scrollHeight;
+		currGift.style.height = currGiftHeight;
+
+		if(giftContent.style.visibility === "visible") {   // close the form
+			let newHeight = currGiftHeight - giftContentHeight;
+			giftContent.style.transition = "0s";
+			giftContent.style.opacity = 0;
+			giftContent.style.visibility = "hidden";
+			currGift.style.height = `${newHeight}px`;
+		} else {    // open the form
+			let newHeight = currGiftHeight;
+			currGift.style.height = `${newHeight}px`;
+			giftContent.style.transition = "2s ease";
+			giftContent.style.opacity = 1;
+			giftContent.style.visibility = "visible";
+		}
+	}
+</script>
+{% endblock %}

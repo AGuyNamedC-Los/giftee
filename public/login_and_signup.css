@@ -1,0 +1,123 @@
+:root {
+    --input-border: #0060E0;
+    --grey: #666a72;
+}
+
+html {
+    font-family: "GTWalsheim", system-ui, sans-serif;
+    text-rendering: optimizelegibility;
+}
+
+a {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 15rem;
+    margin: 3rem auto;  
+}
+
+img {
+    width: 100%;
+    max-width: 8rem;
+    margin: 0 auto;
+}
+
+form {
+    border: solid;
+    width: 100%;
+    max-width: 35rem;
+    margin: 0 auto;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    margin: 1.5rem auto;
+    width: 100%;
+    max-width: 80%;
+}
+
+.message {
+    position: relative;
+    transform: translate(0, .5rem);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    font-size: .9rem;
+    visibility: hidden;
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+form label {
+    padding: .75rem 1rem;
+    position: absolute;
+    z-index: 2;
+    transition: .25s;
+    pointer-events: none;
+    color: var(--grey);
+}
+
+form input {
+    position: relative;
+    z-index: 3;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    padding: .75rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+}
+
+form input:focus { outline: none; }
+
+form input:focus ~ label,
+form input:not(:focus):valid ~ label { 
+    transform: translate(.75rem, -.5rem);
+    padding: 0;
+    background-color: white;
+    z-index: 4;
+    font-size: .9rem;
+}
+
+.input-box:not(:last-child) input:focus {
+    border: 2px solid var(--input-border);
+}
+
+.input-box input:focus ~ label {
+    color: var(--input-border);
+}
+
+.input-box-group .input-box {
+    max-width: 45%;
+    margin: 0;
+}
+
+.input-box-group {
+    display: flex;
+    width: 100%;
+    max-width: 80%;
+    margin: 2rem auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#button, i { cursor: pointer; }
+#button {
+    color: white;
+    background-color: #0060E0;
+}
+.far { transform: translate(0, -1rem); }
+.message i { transform: translate(0, 0rem); }

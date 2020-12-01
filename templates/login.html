@@ -1,0 +1,30 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="login_and_signup.css", type="text/css", rel="stylesheet">
+    <title>Login</title>
+</head>
+<body>
+    <main>
+        <a href="/"><img src="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png" alt="giftee-logo"></a>
+        <form id="login-form" action="api/authenticate/login_status" method="POST">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" name="email" required>
+                <label>Email</label>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+            <div class="input-box">
+                <input id="button" type="submit" value="Login">
+            </div>
+        </form>
+    </main>
+</body>
+<script>
+    document.getElementById("login-form").reset();     // so all text inside inputs are cleared on page refresh or load
+</script>
+</html>
