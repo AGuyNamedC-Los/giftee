@@ -1,8 +1,6 @@
 // knex queries
 // http://perkframework.com/v1/guides/database-migrations-knex.html
-const knex = require('knex')
-const config = require('../knexfile.js')
-const db = knex(config.development)
+const db = require('../dbConfig');
 
 module.exports = {
     addUser,
@@ -15,7 +13,7 @@ module.exports = {
     addGift,
     deleteGift,
     saveGiftChanges
-}
+};
 
 async function addUser(user, uuid) {
     return await db("users").insert({

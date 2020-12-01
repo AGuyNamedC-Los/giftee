@@ -55,12 +55,13 @@ router.post('/sign_up_status', urlencodedParser, (req, res) => {
 	for(i = 0; i < 5; i++) {
         emailCode +=  String(Math.floor(Math.random() * 101));
     }
-    credentials.code = emailCode;
+    credentials.code = emailCode;   // adding a code value to credentials
+    credentials.profilePicture = "" // adding a profile picture value to credentials
 
     bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS), function(err, salt) {
         bcrypt.hash(password, salt, function(err, hash) {
-            credentials.salt = salt;
-            credentials.hashedPassword = hash
+            credentials.salt = salt;    // adding a salt value to credentials
+            credentials.hashedPassword = hash   // adding a hashed password to credentials
 
             usersDB.addUser(credentials, uuidv4())
             .then(user => {

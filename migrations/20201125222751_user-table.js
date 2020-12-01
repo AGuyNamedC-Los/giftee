@@ -3,6 +3,7 @@ exports.up = function(knex) {
         table.increments("id")
         table.uuid("uuid")
         table.text("role")
+        table.text("profilePicture")
         table.text("username").notNullable().unique()
         table.text("firstname")
         table.text("lastname")
