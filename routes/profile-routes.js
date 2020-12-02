@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require("express");
 const usersDB = require("../models/dbHelpers");
+const path = require('path');
 
 const router = express.Router();
-router.use(express.static('public'));  // allows the use of the public directory which includes the css
 var urlencodedParser = express.urlencoded({extended: true});   // allows the ability to parse input from an html form
 
 router.get('/', (req, res) => {

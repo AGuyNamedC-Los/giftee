@@ -2,7 +2,6 @@ const express = require("express");
 const usersDB = require("../models/dbHelpers");
 
 const router = express.Router();
-router.use(express.static('public'));  // allows the use of the public directory which includes the css
 var urlencodedParser = express.urlencoded({extended: true});
 
 router.get('/', (req, res) => {

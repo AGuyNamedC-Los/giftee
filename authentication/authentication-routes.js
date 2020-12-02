@@ -6,7 +6,6 @@ const { v4: uuidv4 } = require('uuid');
 const sendMail = require('./sendMail');
 
 const router = express.Router();
-router.use(express.static('public'));  // allows the use of the public directory which includes the css
 var urlencodedParser = express.urlencoded({extended: true});
 
 // for all endpoints beginning with /api/authenticate
@@ -65,7 +64,7 @@ router.post('/sign_up_status', urlencodedParser, (req, res) => {
 
             usersDB.addUser(credentials, uuidv4())
             .then(user => {
-                sendMail(user.email, user.code);
+                sendMail(credentials.email, credentials.code);
                 req.session.user = {role: "temp_user", firstname: credentials.firstname, lastname: credentials.lastname, email: credentials.email, username: credentials.username};
                 res.render('sign_up_success.njk', {user: req.session.user});
             })
