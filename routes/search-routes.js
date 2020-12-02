@@ -12,6 +12,8 @@ router.get('/', (req, res) => {
             for(let i = 0; i < usernames.length; i++) {
                 usernameArray.push(usernames[i].username);
             }
+            console.log(usernames);
+            console.log(usernameArray);
 
             res.render('search.njk', {user: req.session.user, usernames: usernameArray});
         })

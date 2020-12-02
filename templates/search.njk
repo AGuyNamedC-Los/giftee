@@ -25,8 +25,9 @@
 <script>
 	var search = document.getElementById('search-bar');
 	var usernameListElem = document.getElementById("usernameList");
-	var usernames = [('{{usernames}}')]
-	
+	var usernames = '{{usernames}}'.split(',');		// takes an array of strings then splits them by every ','
+	// JSON.parse('{{obj}}'.replace(/&quot;/g,'"'))		in the case of taking in a json object
+
 	document.getElementById("search-bar").value = "";
 
 	async function getUserNames(searchText) {

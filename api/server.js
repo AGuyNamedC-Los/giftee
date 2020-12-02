@@ -65,7 +65,31 @@ server.get('/users', (req, res) => {
 });
 
 server.post('/add-gift', (req, res) => {
-    usersDB.addGift("closcastillo95@gmail.com", {name: "gift name", "price": 10})
+    usersDB.addGift("closcastillo95@gmail.com", {
+        itemName: "gift name",
+        notes: "place holder notes",
+        price: "20",
+        quantity: "3",
+        size: "big",
+        storeLink: "asdasd"
+    })
+        .then(gift => {
+            res.status(200).json(gift);
+        })
+        .catch(err => {
+            res.status(500).json({error: "couldnt add gift"});
+        })
+})
+
+server.post('/add-gift2', (req, res) => {
+    usersDB.addGift("closcastillo@gmail.com", {
+        itemName: "gift name",
+        notes: "place holder notes",
+        price: "20",
+        quantity: "3",
+        size: "big",
+        storeLink: "asdasd"
+    })
         .then(gift => {
             res.status(200).json(gift);
         })
@@ -91,6 +115,16 @@ server.get('/delete-users', (req, res) => {
 
 server.get('/upgrade', (req, res) => {
     usersDB.upgradeUser("closcastillo95@gmail.com")
+        .then(user => {
+            res.status(200).json({message: "upgraded user"})
+        })
+        .catch(err => {
+            res.status(500).json({message: "error upgrading user"})
+        })
+})
+
+server.get('/upgrade2', (req, res) => {
+    usersDB.upgradeUser("closcastillo@gmail.com")
         .then(user => {
             res.status(200).json({message: "upgraded user"})
         })
