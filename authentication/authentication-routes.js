@@ -1,3 +1,4 @@
+// for all endpoints beginning with /api/authenticate
 require('dotenv').config();
 const express = require("express");
 const usersDB = require("../models/dbHelpers");
@@ -8,7 +9,6 @@ const sendMail = require('./sendMail');
 const router = express.Router();
 var urlencodedParser = express.urlencoded({extended: true});
 
-// for all endpoints beginning with /api/authenticate
 router.post('/sign_up_status', urlencodedParser, (req, res) => {
     let credentials = req.body;
     let {username, password} = credentials;

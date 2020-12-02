@@ -1,7 +1,7 @@
+// for all endpoints beginning with /api/profile
 require('dotenv').config();
 const express = require("express");
 const usersDB = require("../models/dbHelpers");
-const path = require('path');
 
 const router = express.Router();
 var urlencodedParser = express.urlencoded({extended: true});   // allows the ability to parse input from an html form

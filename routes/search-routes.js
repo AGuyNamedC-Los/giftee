@@ -1,3 +1,4 @@
+// for all endpoints beginning with /api/search
 const express = require("express");
 const usersDB = require("../models/dbHelpers");
 

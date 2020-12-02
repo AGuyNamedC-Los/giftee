@@ -2,13 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
-const path = require('path');
 const setupMiddleware = require('../authentication/setupMiddleware');
 const usersOnly = require('../authentication/usersOnlyMiddleware');
 const authenticateRouter = require('../authentication/authentication-routes');
 const profileRouter = require('../routes/profile-routes');
 const searchRouter = require('../routes/search-routes');
-const usersOnlyMiddleware = require('../authentication/usersOnlyMiddleware');
 
 var server = express();
 const sessionConfig = {
@@ -38,7 +36,7 @@ const template = nunjucks.precompile(
 );
 
 server.get('/', (req, res) => {
-    res.render('home.njk', {user: req.session.user}) ;
+    res.render('home.njk', {user: req.session.user});
 });
 
 server.get('/login', (req, res) => { 
@@ -51,6 +49,6 @@ server.get('/sign-up', (req, res) => {
 
 server.use('/api/search', searchRouter);
 server.use('/api/authenticate', authenticateRouter);
-server.use('/api/profile', usersOnlyMiddleware, profileRouter);
+server.use('/api/profile', usersOnly, profileRouter);
 
 module.exports = server;
