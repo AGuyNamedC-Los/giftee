@@ -8,12 +8,11 @@ var urlencodedParser = express.urlencoded({extended: true});
 router.get('/', (req, res) => {
     usersDB.findVerifiedUsernames()
         .then(usernames => {
+            // extracts the contents of the usernames object and put them into an array of strings
             let usernameArray = [];
             for(let i = 0; i < usernames.length; i++) {
                 usernameArray.push(usernames[i].username);
             }
-            console.log(usernames);
-            console.log(usernameArray);
 
             res.render('search.njk', {user: req.session.user, usernames: usernameArray});
         })

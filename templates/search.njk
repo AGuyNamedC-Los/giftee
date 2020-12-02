@@ -45,12 +45,10 @@
 	}
 
 	const outputHTML = matches => {
-		if(matches.length > 0) {
+		if (matches.length > 0) {
 			var html = matches.map(match => 
 				`
-				<div class="search-result">
-					<a href="${match}">${match}</a> 
-				</div>
+					<a class="search-result" href="${match}">${match}</a> 
 				`
 				).join(" ");
 			usernameList.innerHTML = html;
