@@ -84,14 +84,14 @@ async function addGift(email, newGift) {
 
         return await db("users")
             .where({email: email})
-            .update({giftList: JSON.stringify(userGiftList)})
+            .update({giftList: JSON.stringify(userGiftList)}, ['email'])
     } else {    // empty gift list
         let newGiftList = []
         newGiftList.push(newGift)
 
         return await db("users")
             .where({email: email})
-            .update({giftList: JSON.stringify(newGiftList)})
+            .update({giftList: JSON.stringify(newGiftList)}, ['email'])
     }
 }
 
@@ -105,7 +105,7 @@ async function deleteGift(email, index) {
 
     return await db("users")
         .where({email: email})
-        .update({giftList: JSON.stringify(userGiftList)})
+        .update({giftList: JSON.stringify(userGiftList)}, ['email'])
 }
 
 async function saveGiftChanges(email, index, giftChanges) {
@@ -118,6 +118,6 @@ async function saveGiftChanges(email, index, giftChanges) {
 
     return await db("users")
         .where({email: email})
-        .update({giftList: JSON.stringify(userGiftList)})
+        .update({giftList: JSON.stringify(userGiftList), ['email']})
 
 }
