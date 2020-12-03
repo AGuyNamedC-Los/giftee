@@ -19,6 +19,7 @@ async function addUser(user, uuid) {
     return await db("users").insert({
         uuid: uuid,
         role: "temp_user",
+        profilePicture: "",
         username: user.username,
         firstname: user.firstname,
         lastname: user.lastname,
