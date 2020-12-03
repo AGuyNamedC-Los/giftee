@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express = require("express");
 const usersDB = require("../models/dbHelpers");
+var validUrl = require('valid-url');
 
 const router = express.Router();
 var urlencodedParser = express.urlencoded({extended: true});   // allows the ability to parse input from an html form
@@ -55,7 +56,14 @@ router.post('/deleted_gift_status', urlencodedParser, (req, res) => {
 router.post('/save_changes_status', urlencodedParser, (req, res) => {
     const {email} = req.session.user;
     const index = req.body.index;
-    const {itemName, notes, price, quantity, size, storeLink} = req.body;
+    let {itemName, notes, price, quantity, size, storeLink} = req.body;
+    if (storeLink == "") {
+        console.log("empty url");
+        storeLink = ""
+    } else if (!validUrl.isUri(storeLink)){
+        storeLink = "Invalid Url was submitted";
+    }
+
     const giftChanges = {
         itemName: itemName,
         notes: notes,

@@ -7,11 +7,11 @@
 
 {% block main%}
 <section class="main-content conent-4">
-	<h1>{{username}}'s gift list</h1>
+	<h1>{{username}}'s Gift List</h1>
 	<div class="gift-list gift-list-public">
 		{% for i in range(0, giftList.length) -%}
 			<div class="gift gift-public">
-				<i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}})"></i>
+				<i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}}); toggleImage({{i}})"></i>
 				<h2>{{giftList[i].itemName}}</h2>
 				<div class="gift-content gift-content-public">
 					<div class="input-box">
@@ -63,5 +63,15 @@
 			giftContent.style.visibility = "visible";
 		}
 	}
+
+	function toggleImage(index, privacy) {
+        let openGiftBtn = publicGifts[index].getElementsByClassName("openGiftButton")[0]; 
+
+        if (openGiftBtn.className == "far fa-arrow-alt-circle-down openGiftButton") {
+            openGiftBtn.className = "far fa-arrow-alt-circle-up openGiftButton";
+        } else {
+            openGiftBtn.className = "far fa-arrow-alt-circle-down openGiftButton"
+        }
+    }
 </script>
 {% endblock %}

@@ -14,9 +14,9 @@ module.exports = async function sendConfirmationCode(email, emailCode) {
 	
 	sgMail.send(msg)
 	  .then(() => {
-		console.log('Email sent')
+		console.log('Email sent');
 	  })
 	  .catch((error) => {
-		console.error(error)
+		console.error(error);
 	  })
 }

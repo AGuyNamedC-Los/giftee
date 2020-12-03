@@ -43,7 +43,7 @@
     <div class="gift-list gift-list-private">
         {% for i in range(0, giftList.length) -%}
             <div class="gift gift-private">
-                <i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}}, 'private')"></i>
+                <i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}}, 'private'); toggleImage({{i}})"></i>
                 <h2>{{giftList[i].itemName}}</h2>
                 <div class="gift-content gift-content-private">
                     <div class="gift-form gift-form-private">
@@ -135,6 +135,16 @@
 
     function addGift(form) { form.submit(); }
     function applyChangesToCurrGift(form) { form.submit(); }
+
+    function toggleImage(index, privacy) {
+        let openGiftBtn = privateGifts[index].getElementsByClassName("openGiftButton")[0]; 
+
+        if (openGiftBtn.className == "far fa-arrow-alt-circle-down openGiftButton") {
+            openGiftBtn.className = "far fa-arrow-alt-circle-up openGiftButton";
+        } else {
+            openGiftBtn.className = "far fa-arrow-alt-circle-down openGiftButton"
+        }
+    }
 
     /* EXPERIMENTAL AJAX BELOW */
     function addGift2() {
