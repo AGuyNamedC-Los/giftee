@@ -34,7 +34,7 @@
                     <input type="text" name="storeLink" autocomplete="off" required>
                     <label>Store Link</label>
                 </div>
-                <input id="add-gift-btn" type="button" onclick="addGift(this.form)" value="Add Gift">
+                <input class="btn-type1" type="button" onclick="addGift(this.form)" value="Add Gift">
             </form>
             <div id="gift-bottom">Add Gift</div>
         </div>
@@ -73,11 +73,11 @@
                                 <label>Store Link</label>
                             </div>
                             <p hidden><input type="number" name="index" value="{{i}}"></p>
-                            <button class="apply-changes-btn" onclick="applyChangesToCurrGift(this.form)" type="button">Apply Changes</button>
+                            <button class="btn-type1" onclick="applyChangesToCurrGift(this.form)" type="button">Apply Changes</button>
                         </form>
                         <form id="delete-gift-form" action="deleted_gift_status" method="POST">
                             <p hidden><input type="number" name="index" value="{{i}}"></p>
-                            <button class="delete-btn" type="submit">Delete</button>
+                            <button class="btn-type1" type="submit">Delete</button>
                         </form>
                     </div>
                 </div>
