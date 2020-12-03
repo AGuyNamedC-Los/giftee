@@ -46,7 +46,7 @@
 		if (matches.length > 0) {
 			var html = matches.map(match => 
 				`
-					<a class="search-result" href="${match}">${match}</a> 
+					<a class="search-result" href="/api/search/${match}">${match}</a> 
 				`
 				).join(" ");
 			usernameList.innerHTML = html;

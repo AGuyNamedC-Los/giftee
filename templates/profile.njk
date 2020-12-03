@@ -47,7 +47,7 @@
                 <h2>{{giftList[i].itemName}}</h2>
                 <div class="gift-content gift-content-private">
                     <div class="gift-form gift-form-private">
-                        <form id="save-changes-form" action="save_changes_status" method="POST">
+                        <form id="save-changes-form" action="/api/profile/save_changes_status" method="POST">
                             <div class="input-box">
                                 <input type="text" name="itemName" value="{{giftList[i].itemName}}" autocomplete="off" required>
                                 <label>Item Name</label>
@@ -75,7 +75,7 @@
                             <p hidden><input type="number" name="index" value="{{i}}"></p>
                             <button class="btn-type1" onclick="applyChangesToCurrGift(this.form)" type="button">Apply Changes</button>
                         </form>
-                        <form id="delete-gift-form" action="deleted_gift_status" method="POST">
+                        <form id="delete-gift-form" action="/api/profile/deleted_gift_status" method="POST">
                             <p hidden><input type="number" name="index" value="{{i}}"></p>
                             <button class="btn-type1" type="submit">Delete</button>
                         </form>
