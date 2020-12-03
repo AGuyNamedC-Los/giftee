@@ -118,6 +118,5 @@ async function saveGiftChanges(email, index, giftChanges) {
 
     return await db("users")
         .where({email: email})
-        .update({giftList: JSON.stringify(userGiftList), ['email']})
-
+        .update({giftList: JSON.stringify(userGiftList)}, ['email'])
 }
