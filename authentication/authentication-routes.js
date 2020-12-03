@@ -66,11 +66,15 @@ router.post('/sign_up_status', urlencodedParser, (req, res) => {
             .then(user => {
                 sendMail(credentials.email, credentials.code);
                 req.session.user = {role: "temp_user", firstname: credentials.firstname, lastname: credentials.lastname, email: credentials.email, username: credentials.username};
-                res.render('sign_up_success.njk', {user: req.session.user});
+                res.render("response.njk", {user: req.session.user, title: "Sign Up Success!", link: "/", message: "Thanks for signing up! Be sure to enter the confirmation code you received in your email to finish making your profile", buttonMsg: "BACK TO HOME PAGE"});
             })
             .catch(err => {
-                if (err.errno == 19) {res.status(400).json({message: "username or email already taken"})}
-                else {res.status(500).json(err)}
+                if (err.errno == 19) {
+                    res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: "That username or email has already been taken!", buttonMsg: "BACK TO SIGN UP PAGE"});
+                }
+                else {
+                    res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: "Error: " + err, buttonMsg: "BACK TO SIGN UP PAGE"});
+                }
             })
         });
     });

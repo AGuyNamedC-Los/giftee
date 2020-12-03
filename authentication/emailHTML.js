@@ -30,6 +30,7 @@ module.exports = function (emailCode) {
                         width: 100%;
                         max-width: 20rem;
                         margin: 0 auto;
+                        background-color: white;
                     }
                 
                     #top {

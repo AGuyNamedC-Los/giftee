@@ -114,7 +114,6 @@ async function saveGiftChanges(email, index, giftChanges) {
 
     let userGiftList = eval(user.giftList);
     userGiftList[index] = giftChanges;
-    console.log(userGiftList)
 
     return await db("users")
         .where({email: email})

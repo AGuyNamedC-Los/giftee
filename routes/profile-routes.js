@@ -58,7 +58,6 @@ router.post('/save_changes_status', urlencodedParser, (req, res) => {
     const index = req.body.index;
     let {itemName, notes, price, quantity, size, storeLink} = req.body;
     if (storeLink == "") {
-        console.log("empty url");
         storeLink = ""
     } else if (!validUrl.isUri(storeLink)){
         storeLink = "Invalid Url was submitted";

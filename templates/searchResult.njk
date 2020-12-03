@@ -30,7 +30,11 @@
 						<input type="text" class="input-name" value="{{giftList[i].size}}" readonly>
 						<label>SIZE</label>
 					</div>
-					<a class="btn-type1" href="{{giftList[i].storeLink}}" target="_blank">BUY</a>
+					{% if giftList[i].storeLink == "" or giftList[i].storeLink == "Invalid Url was submitted" %}
+						<div class="btn-type2"><del>BUY</del></div>
+					{% else %}
+						<a class="btn-type1" href="{{giftList[i].storeLink}}" target="_blank">BUY</a>
+					{% endif%}
 				</div>
 			</div>
 		{%- endfor %}

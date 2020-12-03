@@ -252,7 +252,8 @@ nav div {
 .input-box:not(:last-child) input:focus { border: 2px solid var(--input-border); }
 .input-box input:focus ~ label { color: var(--input-border); }
 
-.btn-type1 {
+/* matches the size of the other input fields within the same container */
+.btn-type1, .btn-type2 {
     cursor: pointer;
     width: 100%;
     max-width: 80%;
@@ -262,6 +263,11 @@ nav div {
     border: none;
     background-color: var(--input-border);
     color: white;
+}
+
+.btn-type2 {
+    background-color: #AE1100;
+    cursor: initial;
 }
 
 /*------------------------------------------ 
