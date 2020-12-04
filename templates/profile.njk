@@ -6,6 +6,9 @@
 
 {% block main %}
 <section class="main-content content-2">
+	<div class="btn-type1" onclick="copyGiftListLink()">Share Your Gift List Link</div>
+</section>
+<section class="main-content content-2">
     <h1>Add a gift to your gift list</h1>
         <div id="add-gift">
             <div id="gift-top"></div>
@@ -145,6 +148,18 @@
             openGiftBtn.className = "far fa-arrow-alt-circle-down openGiftButton"
         }
     }
+
+    // creates a selectable element with the user's link
+	var $copyText = $("<input>", {id: "foo", class: "profile-link", value: `${window.location.host}/api/search/{{user.username}}`});
+	// location for the $copyText to be appended to
+	var	$copyTextContainer = $(".main-content:eq(0)");
+
+	function copyGiftListLink() {
+		$copyTextContainer.append($copyText);
+		$copyText.select();
+		document.execCommand("copy");
+		$copyTextContainer.remove($copyText);
+	}
 
     /* EXPERIMENTAL AJAX BELOW */
     function addGift2() {

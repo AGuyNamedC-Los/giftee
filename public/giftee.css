@@ -340,3 +340,11 @@ footer h5 {margin-top: 0; margin-bottom: 0; padding: 1rem}
     border-radius: 5px;
     color:white;
 }
+
+/*------------------------------------------ 
+    profile-link
+------------------------------------------*/
+.profile-link {
+    opacity: 0;
+    position: absolute;
+}

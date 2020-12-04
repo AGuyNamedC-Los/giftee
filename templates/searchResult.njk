@@ -6,7 +6,10 @@
 {% endblock %}
 
 {% block main%}
-<section class="main-content conent-4">
+<section class="main-content content-2">
+	<div class="btn-type1" onclick="copyGiftListLink()">Share {{username}}'s Gift List Link</div>
+</section>
+<section class="main-content content-4">
 	<h1>{{username}}'s Gift List</h1>
 	<div class="gift-list gift-list-public">
 		{% for i in range(0, giftList.length) -%}
@@ -46,6 +49,7 @@
 <script>
 	var publicGiftList = document.getElementsByClassName("gift-list-public")[0];
 	var publicGifts = publicGiftList.getElementsByClassName("gift-public");
+
 	function openGift(index) {
 		let giftContent = publicGifts[index].getElementsByClassName("gift-content")[0];
 		let currGift = publicGifts[index];
@@ -77,5 +81,17 @@
             openGiftBtn.className = "far fa-arrow-alt-circle-down openGiftButton"
         }
     }
+
+	// creates a selectable element with the user's link
+	var $copyText = $("<input>", {id: "foo", class: "profile-link", value: `${window.location.host}/api/search/{{username}}`});
+	// location for the $copyText to be appended to
+	var	$copyTextContainer = $(".main-content:eq(0)");
+
+	function copyGiftListLink() {
+		$copyTextContainer.append($copyText);
+		$copyText.select();
+		document.execCommand("copy");
+		$copyTextContainer.remove($copyText);
+	}
 </script>
 {% endblock %}
