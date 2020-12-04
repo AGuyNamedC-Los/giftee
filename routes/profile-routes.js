@@ -23,7 +23,7 @@ router.post('/added_gift_status', urlencodedParser, (req, res) => {
     const {email} = req.session.user;
     const {itemName, notes, price, quantity, size, storeLink} = req.body;
     const newGift = {
-        itemName: itemName,
+        itemName: (itemName == "") ? "Gift" : itemName,
         notes: notes,
         price: price,
         quantity: quantity,
