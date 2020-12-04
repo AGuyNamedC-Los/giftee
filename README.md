@@ -47,7 +47,7 @@ I thought it would be a lot simpler to have one place to see a person's gift lis
     - change password
 - add a privacy option for users
 - implement a friends/followers list
-    - ping users in the friends list when someone has bought an item from your gift list
+    - ping users in the friends list when someone has bought an item from your gift list.
 
 # Why The Change in Code?
 
