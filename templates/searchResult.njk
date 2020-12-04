@@ -83,7 +83,7 @@
     }
 
 	// creates a selectable element with the user's link
-	var $copyText = $("<input>", {id: "foo", class: "profile-link", value: `${window.location.host}/api/search/{{username}}`});
+	var $copyText = $("<input>", {id: "foo", class: "profile-link", value: `${window.location}`});
 	// location for the $copyText to be appended to
 	var	$copyTextContainer = $(".main-content:eq(0)");
 
