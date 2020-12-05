@@ -15,10 +15,9 @@ module.exports = {
 	// },
 	production: {
 		client: 'pg',
-		debug: true,
 		connection: {
 			connectionString : process.env.DATABASE_URL,
-			ssl: false
+			ssl: true
 		  },
 		pool: {
 			min: 2,
@@ -28,5 +27,5 @@ module.exports = {
 		  tableName: 'knex_migrations',
 		  directory: './migrations'
 		},
-	  }
+	}
 };
