@@ -12,12 +12,12 @@ module.exports = {
 		client: "pg",
 		connection: process.env.DATABASE_URL,
 		pool: {
-			min: 2,
-			max: 10,
+		  min: 2,
+		  max: 10,
 		},
 		migrations: {
-			tablename: "knex_migrations",
-			directory: "./migrations",
-		}
-	}
+		  tablename: "knex_migrations",
+		  directory: "./migrations",
+		},
+	  },
 };
