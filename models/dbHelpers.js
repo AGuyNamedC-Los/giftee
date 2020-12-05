@@ -42,7 +42,6 @@ async function findVerifiedUsernames() {
 }
 
 async function findUser(email, username) {
-    console.log(email + username)
     return await db("users")
         .where({
             email: email,
