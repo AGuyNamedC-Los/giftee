@@ -36,7 +36,7 @@ const template = nunjucks.precompile(
 );
 
 server.get('/', (req, res) => {
-    res.render('home.njk', {user: req.session.user});
+    res.render('home.njk', {user: req.session.user, database: process.env.DB_ENVIRONMENT});
 });
 
 server.get('/login', (req, res) => { 

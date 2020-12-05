@@ -14,18 +14,19 @@ module.exports = {
 	  	},
 	},
 	production: {
-	  	client: "pg",
-	  	connection: {
-			  connectionString: process.env.DATABASE_URL,
-			  ssl: false
-		},
-	  	pool: {
+		client: 'pg',
+		debug: true,
+		connection: {
+			connectionString : process.env.DATABASE_URL,
+			ssl: false
+		  },
+		pool: {
 			min: 2,
-			max: 10,
-	  	},
-	  	migrations: {
-			tablename: "knex_migrations",
-			directory: "./migrations",
-	  	},
-	},
+			max: 10
+		},
+		migrations: {
+		  tableName: 'knex_migrations',
+		  directory: './migrations'
+		},
+	  }
 };
