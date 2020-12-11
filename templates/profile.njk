@@ -47,7 +47,13 @@
         {% for i in range(0, giftList.length) -%}
             <div class="gift gift-private">
                 <i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}}, 'private'); toggleImage({{i}})"></i>
-                <h2>{{giftList[i].itemName}}</h2>
+                <h2>
+                    {% if giftList[i].itemName == ""%}
+                        GIFT
+                    {% else %}
+                        {{giftList[i].itemName}}
+                    {% endif %}
+                </h2>
                 <div class="gift-content gift-content-private">
                     <div class="gift-form gift-form-private">
                         <form id="save-changes-form" action="/api/profile/save_changes_status" method="POST">

@@ -7,6 +7,8 @@ const usersOnly = require('../authentication/usersOnlyMiddleware');
 const authenticateRouter = require('../authentication/authentication-routes');
 const profileRouter = require('../routes/profile-routes');
 const searchRouter = require('../routes/search-routes');
+const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt');
 
 var server = express();
 const sessionConfig = {
@@ -36,7 +38,7 @@ const template = nunjucks.precompile(
 );
 
 server.get('/', (req, res) => {
-    res.render('home.njk', {user: req.session.user, database: process.env.DB_ENVIRONMENT});
+    res.render('home.njk', {user: req.session.user});
 });
 
 server.get('/login', (req, res) => { 
