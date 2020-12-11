@@ -24,12 +24,10 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "knex": "^0.21.12",
     "nodemon": "^2.0.6",
     "nunjucks": "^3.2.2",
     "pg": "^8.5.1",
     "sendgrid": "^5.2.3",
-    "sqlite3": "^5.0.0",
     "uuid": "^8.3.1",
     "valid-url": "^1.0.9"
   }
