@@ -18,20 +18,5 @@ const config = {
     }
 }
 
-console.log(dbENV);
-console.log(config);
-
 const db = new Pool(config[dbENV]);
-
 module.exports = db;
-
-// module.exports = {
-//     query: function(text, values, cb) {
-//        pg.connect(function(err, client, done) {
-//             client.query(text, values, function(err, result) {
-//                 done();
-//                 cb(err, result);
-//             });
-//        });
-//     }
-//  };

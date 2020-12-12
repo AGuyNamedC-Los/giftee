@@ -1,34 +1,36 @@
 {
-  "name": "giftee",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AGuyNamedC-Los/giftee.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AGuyNamedC-Los/giftee/issues"
-  },
-  "homepage": "https://github.com/AGuyNamedC-Los/giftee#readme",
-  "dependencies": {
-    "@sendgrid/mail": "^7.4.0",
-    "bcrypt": "^5.0.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "nodemon": "^2.0.6",
-    "nunjucks": "^3.2.2",
-    "pg": "^8.5.1",
-    "sendgrid": "^5.2.3",
-    "uuid": "^8.3.1",
-    "valid-url": "^1.0.9"
-  }
+	"name": "giftee",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AGuyNamedC-Los/giftee.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/AGuyNamedC-Los/giftee/issues"
+	},
+	"homepage": "https://github.com/AGuyNamedC-Los/giftee#readme",
+	"dependencies": {
+		"@sendgrid/mail": "^7.4.0",
+		"bcrypt": "^5.0.0",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"express-session": "^1.17.1",
+		"nunjucks": "^3.2.2",
+		"pg": "^8.5.1",
+		"sendgrid": "^5.2.3",
+		"uuid": "^8.3.1",
+		"valid-url": "^1.0.9"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.6"
+	}
 }
