@@ -7,8 +7,6 @@ const usersOnly = require('../authentication/usersOnlyMiddleware');
 const authenticateRouter = require('../authentication/authentication-routes');
 const profileRouter = require('../routes/profile-routes');
 const searchRouter = require('../routes/search-routes');
-const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
 
 var server = express();
 const sessionConfig = {
