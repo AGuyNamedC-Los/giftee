@@ -13,7 +13,7 @@ I thought it would be a lot simpler to have one place to see a person's gift lis
 - Nunjucks
 - Express
 - Heroku
-- Knex
+- Postgres
 - Send Grid
 - HTML5
 - CSS3
@@ -51,4 +51,4 @@ I thought it would be a lot simpler to have one place to see a person's gift lis
 
 # Why The Change in Code?
 
-The main reason why I created an entirely new version of giftee was to completely redo the backend which was previously all stored in one file. Also, the database that I was previously using (nedb) did not work with Heroku, hence the change to Knex. 
+The main reason why I created an entirely new version of giftee was to completely redo the backend which was previously all stored in one file. Also, the database that I was previously using (nedb) did not work with Heroku, hence the change to postgres. 
