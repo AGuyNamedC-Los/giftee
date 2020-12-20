@@ -38,7 +38,7 @@ router.post('/added_gift_status', urlencodedParser, async (req, res) => {
             `
             UPDATE users 
             SET giftlist = COALESCE(giftlist, '[]'::jsonb) || $1::jsonb
-            WHERE email = $2;
+            WHERE email = $2
             `, [newGift, email]
         );
 
@@ -57,13 +57,13 @@ router.post('/deleted_gift_status', urlencodedParser, async (req, res) => {
             `
             UPDATE users
             SET giftlist = giftlist - $1::integer
-            WHERE email $2
+            WHERE email = $2
             `, [index, email]
         );
         
         res.render("response.njk", {user: req.session.user, title: "Gift Deleted", link: "/api/profile", message: "Gift Successfully Deleted!", buttonMsg: "BACK TO GIFT LIST"});
     } catch (err) {
-        res.render("response.njk", {user: req.session.user, title: "Error", link: "/api/profile", message: "error: " + err, buttonMsg: "BACK TO GIFT LIST"});
+        res.render("response.njk", {user: req.session.user, title: "Error", link: "/api/profile", message: err, buttonMsg: "BACK TO GIFT LIST"});
     }
 });
 
