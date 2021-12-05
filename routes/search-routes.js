@@ -22,7 +22,12 @@ router.get('/', async (req, res) => {
         
         res.render('search.njk', {user: req.session.user, usernames: usernames});
     } catch (err) {
-        res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: err, buttonMsg: "BACK TO HOME"});
+        res.render("response.njk", {
+            user: req.session.user, 
+            title: "Error", 
+            link: "/", 
+            message: err, 
+            buttonText: "Back to homepage"});
     }
     
 });
@@ -39,12 +44,22 @@ router.get('/:username', urlencodedParser, async (req, res) => {
         );
 
         if (dbResult.rows.length == 0) {
-            res.render("response.njk", {user: req.session.user, title: "User Not Found", link: "/api/search", message: "Could Not Find A User With That Name", buttonMsg: "BACK TO SEARCH"});
+            res.render("response.njk", {
+                user: req.session.user, 
+                title: "User Not Found", 
+                link: "/api/search", 
+                message: "Could not find a user with that username, trying entering a different username", 
+                buttonText: "Back to search page"});
         } else {
             res.render('searchResult.njk', {user: req.session.user, username: username, giftList: dbResult.rows[0]["giftlist"]});
         }
     } catch (err) {
-        res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: err, buttonMsg: "BACK TO HOME"});
+        res.render("response.njk", {
+            user: req.session.user, 
+            title: "Error", 
+            link: "/", 
+            message: err, 
+            buttonText: "Back to homepage"});
     }
 });
 

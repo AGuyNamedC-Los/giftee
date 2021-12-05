@@ -20,17 +20,19 @@
 	"homepage": "https://github.com/AGuyNamedC-Los/giftee#readme",
 	"dependencies": {
 		"@sendgrid/mail": "^7.4.0",
-		"bcrypt": "^5.0.0",
+		"bcrypt": "^5.0.1",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"express-session": "^1.17.1",
+		"nodemailer": "^6.6.3",
 		"nunjucks": "^3.2.2",
 		"pg": "^8.5.1",
+		"request": "^2.88.2",
 		"sendgrid": "^5.2.3",
 		"uuid": "^8.3.1",
 		"valid-url": "^1.0.9"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.6"
+		"nodemon": "^2.0.15"
 	}
 }

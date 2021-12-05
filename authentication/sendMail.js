@@ -1,22 +1,32 @@
+require('dotenv').config();
 const emailHTML = require('./emailHTML');
 
-module.exports = async function sendConfirmationCode(email, emailCode) {
-	const sgMail = require('@sendgrid/mail');
-	sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+module.exports = async function sendConfirmationCode(url, email) {
+	const emailHTML = require('./emailHTML');
+	require('dotenv').config();
 	
-	const msg = {
-		to: email, // Change to your recipient
-		from: process.env.GMAIL, // Change to your verified sender
-		subject: 'Welcome to Giftee! Confirm Your Email',
-		text: `Here is your confirmation code: ${emailCode}`,
-		html: emailHTML(emailCode)
-	}
+	var nodemailer = require('nodemailer');
 	
-	sgMail.send(msg)
-	.then(() => {
-		console.log('Email sent');
-	})
-	.catch((error) => {
-		console.error(error);
-	})
+	var transporter = nodemailer.createTransport({
+	  service: 'gmail',
+	  auth: {
+		user: process.env.GMAIL,
+		pass: process.env.PASSWORD
+	  }
+	});
+	
+	var mailOptions = {
+		from: process.env.GMAIL,
+		to: email,
+		subject: 'Please Verify Your Giftee Account',
+		html: emailHTML(url)
+	};
+	
+	transporter.sendMail(mailOptions, function(error, info){
+		if (error) {
+			console.log(error);
+		} else {
+			console.log('Email sent: ' + info.response);
+		}
+	}); 
 }

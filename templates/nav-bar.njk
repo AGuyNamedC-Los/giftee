@@ -1,45 +1,19 @@
-{% if (user.role == "guest") %}
-        <header>
-            <nav>
-                <a href="/"><img src="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png" alt="Giftee"></a>
-                <div>
-                    <a href="/api/search">Search</a>
-                    <a href="/login">Login</a>
-                    <a href="/sign-up">Sign Up</a>
-                </div>  
-            </nav>
-        </header>
-		{% elif (user.role == "temp_user") %}
-        <header>
-            <nav>
-                <a href="/"><img src="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png" alt="Giftee"></a>
-                <div>
-                    <a href="/api/search">Search</a>
-                    <a onClick="document.getElementById('logout').submit()">Logout</a>
-						<form id="logout" action="/api/authenticate/logout_status" method="POST"></form>
-                </div>  
-            </nav>
-            <form id="email-confirmation" action="/api/authenticate/email_confirmation_status" method="POST">
-                <div class="input-box">
-                    <input type="text" name="emailConfirmationCode" autocomplete="off" required>
-                    <label>Email Confirmation Code</label>
-                </div>
-                <button class="btn-type1" type="submit">SUBMIT</button>
-			</form>
-            <form id="resend-email-code" action="/api/authenticate/resend_confirmation_code" method="POST">
-                <button class="btn-type1" type="submit">RESEND CONFIRMATION CODE</button>
-			</form>
-        </header>
-		{% else %}
-        <header>
-            <nav>
-                <a href="/"><img src="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png" alt="Giftee"></a>
-                <div>
-                    <a href="/api/search">Search</a>
-                    <a href="/api/profile">Profile</a>
-                    <a onClick="document.getElementById('logout').submit()">Logout</a>
-						<form id="logout" action="/api/authenticate/logout_status" method="POST"></form>
-                </div>  
-            </nav>
-        </header>
-		{% endif %}
+<header>
+    <nav>
+        <a href="/"><i class="fas fa-gift"></i></a>
+        <div>
+            <a href="/api/search">Search</a>
+            {% if (user.role == "guest") %}
+                <a href="/login">Login</a>
+                <a class="button-1" href="/sign-up">Sign Up</a>
+            {% endif %}
+            {% if (user.role == "user") %}
+                <a href="/api/profile">Profile</a>
+            {% endif %}
+            {% if (user.role != "guest") %}
+            <a onClick="document.getElementById('logout').submit()">Logout</a>
+                <form id="logout" action="/api/authenticate/logout_status" method="POST"></form>
+            {% endif %}
+        </div>  
+    </nav>
+</header>

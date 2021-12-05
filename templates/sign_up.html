@@ -1,57 +1,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="login_and_signup.css", type="text/css", rel="stylesheet">
-    <link rel="stylesheet", href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-    <title>Gifee Sign Up</title>
+    <link rel="stylesheet" href="giftee2.css">
+    <script src="https://kit.fontawesome.com/f4fe445c36.js" crossorigin="anonymous"></script>
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
+    <title>Sign Up</title>
 </head>
 <body>
-    <main>
-        <a href="/"><img src="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png" alt="giftee-logo"></a>
-        <form id="signup-form" action="api/authenticate/sign_up_status" method="POST">
-            <h1>Sign Up</h1>
-            <h2>Create your Giftee account</h2>
-            <div class="input-box">
-                <input type="text" name="email" id="email" oninput="validEmail()" required>
-                <label>Email</label>
-                <p class="message">message</p>
-            </div>
-            <div class="input-box-group">
-                <div class="input-box">
-                    <input type="text" name="firstname" id="firstName" onblur="validFirstName()" required>
-                    <label>First Name</label>
-                    <p class="message">message</p>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="lastname" id="lastName" onblur="validLastName()" required>
-                    <label>Last Name</label>
-                    <p class="message">message</p>
-                </div>
-            </div>
-            <div class="input-box">
-                <input type="text" name="username" id="username" oninput="validUsername()" autocomplete="off" required>
-                <label>Username</label>
-                <p class="message">message</p>
-            </div>
-            <div class="input-box-group">
-                <div class="input-box">
-                    <input type="password" name="password" id="password" oninput="validPassword()" required>
-                    <label>Password</label>
-                    <p class="message">Use up to 8 characters with a mix of letters, numbers, and symbols</p>
-                </div>
-                <div class="input-box">
-                    <input type="password" name="confirm" id="confirm" required>
-                    <label>Confirm</label>
-                    <p class="message">Use up to 8 characters with a mix of letters, numbers, and symbols</p>
-                </div>
-                <i class="far fa-eye-slash" onclick="showPassword()"></i>
-            </div>
-            <div class="input-box">
-                <input id="button" type="button" value="Sign Up" onclick="isFormValid()">
-            </div>
-        </form>
-    </main>
+    <div class="giftee-logo">
+        <a href="/"><i class="fas fa-gift"></i></a>
+    </div>
+    
+    <form id="signup-form" class="user-form" action="api/authenticate/sign_up_status" method="POST">
+        <div class="input-box">
+            <label for="">Email</label>
+            <input type="text" name="email" id="email" oninput="validEmail()" required>
+            <p class="error-message"></p>
+        </div>
+        <div class="input-box">
+            <label for="">Username</label>
+            <input input type="text" name="username" id="username" oninput="validUsername()" autocomplete="off" required>
+            <p class="error-message"></p>
+        </div>
+        <div class="input-box">
+            <label for="">First Name</label>
+            <input type="text" name="firstname" id="firstName" onblur="validFirstName()" required>
+            <p class="error-message"></p>
+        </div>
+        <div class="input-box">
+            <label for="">Last Name</label>
+            <input type="text" name="lastname" id="lastName" onblur="validLastName()" required>
+            <p class="error-message"></p>
+        </div>
+        <div class="input-box">
+            <label for="">Password <i class="far fa-eye-slash" onclick="showPassword()"></i></label>
+            <input type="password" name="password" id="password" oninput="validPassword()" required>
+            <p class="error-message"></p>
+        </div>
+        <div class="input-box">
+            <label>Confirm</label>
+            <input type="password" name="confirm" id="confirm" oninput="samePassword()" required>
+            <p class="error-message"></p>
+        </div>
+        <div class="button-1" onclick="isFormValid()">Register</div>
+    </form>
 </body>
 <script>
     var defaultColor = "#dadce0";
@@ -62,19 +59,21 @@
     var hasUsername = false;
     var hasPassword = false;
     var isPassVisible = false;
+    var hasSamePassword = false;
     var currLabelTag = document.getElementsByTagName("label");
     var currInputTag = document.getElementsByTagName("input");
     var currMessageTag = document.getElementsByClassName("message");
     var confirmInput = document.getElementById("confirm");
-
+    var inputBox = document.querySelectorAll(".input-box");
+    var errorMessageHTML = document.querySelectorAll(".error-message");
     document.getElementById("signup-form").reset();     // so all text inside inputs are cleared on page refresh or load
 
     function changeInputColor (index, message, isError) {
         currLabelTag[index].style.color = (isError) ? errorColor : null;
-        currInputTag[index].style.border = (isError) ? `2px solid ${errorColor}` : null;
-        currMessageTag[index].innerHTML = `<i class="fas fa-exclamation-circle"></i>` + " " + message;
-        currMessageTag[index].style.color = (isError) ? `${errorColor}`: null;
-        currMessageTag[index].style.visibility = (isError) ? "visible" :"hidden";
+        currInputTag[index].style.boxShadow = (isError) ? `0 0 0 3px ${errorColor}` : null;
+        errorMessageHTML[index].innerHTML = `<i class="fas fa-exclamation-circle"></i>` + " " + message
+        errorMessageHTML[index].style.display = (isError) ? "initial" : "none";
+        errorMessageHTML[index].style.color = (isError) ? `${errorColor}`: null;
     }
 
     function validEmail() {
@@ -89,30 +88,6 @@
         } else {
             hasEmail = false;
             changeInputColor(0, "Please enter an email address", true);
-        }
-    }
-
-    function validFirstName() {
-        var firstNameInput = document.getElementById("firstName").value;
-        
-        if (firstNameInput != "") {
-            hasFirstName = true;
-            changeInputColor(1, "good", false);
-        } else {
-            hasFirstName = false;
-            changeInputColor(1, "Please enter a first name", true);
-        }
-    }
-
-    function validLastName() {
-        var lastNameInput = document.getElementById("lastName").value;
-        
-        if (lastNameInput != "") {
-            hasLastName = true;
-            changeInputColor(2, "good", false);
-        } else {
-            hasLastName = false;
-            changeInputColor(2, "Please enter a last name", true);
         }
     }
 
@@ -132,10 +107,34 @@
 
         if (badUsername) {
             hasUsername = false;
-            changeInputColor(3, errorMessage, true);
+            changeInputColor(1, errorMessage, true);
         } else {
             hasUsername = true;
-            changeInputColor(3, errorMessage, false);
+            changeInputColor(1, errorMessage, false);
+        }
+    }
+
+    function validFirstName() {
+        var firstNameInput = document.getElementById("firstName").value;
+        
+        if (firstNameInput != "") {
+            hasFirstName = true;
+            changeInputColor(2, "good", false);
+        } else {
+            hasFirstName = false;
+            changeInputColor(2, "Please enter a first name", true);
+        }
+    }
+
+    function validLastName() {
+        var lastNameInput = document.getElementById("lastName").value;
+        
+        if (lastNameInput != "") {
+            hasLastName = true;
+            changeInputColor(3, "good", false);
+        } else {
+            hasLastName = false;
+            changeInputColor(3, "Please enter a last name", true);
         }
     }
 
@@ -161,16 +160,28 @@
         if (badPassword) {
             hasPassword = false;
             changeInputColor(4, errorMessage, true);
-            currMessageTag[5].innerHTML = errorMessage;
         } else {
             hasPassword = true;
             changeInputColor(4, errorMessage, false);
-            currMessageTag[5].innerHTML = errorMessage;
+        }
+    }
+
+    function samePassword() {
+        let errorMessage = "good";
+        var passwordInput = document.getElementById("password").value;
+        var confirmPasswordInput = document.getElementById("confirm").value;
+
+        if (passwordInput != confirmPasswordInput) {
+            hasSamePassword = false;
+            changeInputColor(5, "passwords are not the same!", true);
+        } else {
+            hasSamePassword = true;
+            changeInputColor(5, "", false);
         }
     }
 
     function showPassword() {
-        let eyeBall = document.getElementsByTagName("i")[0];
+        let eyeBall = document.getElementsByTagName("i")[1];
         let passwordInputField = document.getElementById("password");
 
         if (isPassVisible) {
@@ -187,14 +198,7 @@
     }
 
     function isFormValid() {
-        let passwordInput = document.getElementById("password").value;
-        let confirmInput = document.getElementById("confirm").value;
-        if (passwordInput != confirmInput) {
-            changeInputColor(5, "the given passwords do not match", true);
-            return;
-        }
-
-        if (hasEmail && hasFirstName && hasLastName && hasUsername && hasPassword) {
+        if (hasEmail && hasFirstName && hasLastName && hasUsername && hasPassword && hasSamePassword) {
             document.getElementById("signup-form").submit();
         } else {
             validEmail();
@@ -202,6 +206,7 @@
             validLastName();
             validUsername();
             validPassword();
+            samePassword();     // << ADD hasConfirmedPassword or something to if statement above-
         }
     }
 </script>

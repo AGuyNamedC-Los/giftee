@@ -6,95 +6,84 @@
 {% endblock %}
 
 {% block main%}
-<section class="main-content content-2">
-	<div class="btn-type1" onclick="copyGiftListLink()">Share {{username}}'s Gift List Link</div>
+<div class="content-3">
+	<button class="button-1" style="font-weight: 600; font-size: 1.25rem;" type="button" onclick="copyGiftListLink()">Copy {{username}}'s Gift List Link</button>
+</div>
+
+
+
+<section id="gift-list" class="container">
+	{% for i in range(0, giftList.length) -%}
+		<div draggable="true" class="gift draggable" onclick="showGift(this)" 
+		data-index="{{i}}" data-name="{{giftList[i].name}}", 
+		data-price="{{giftList[i].price}}", data-quantity="{{giftList[i].quantity}}", 
+		data-size="{{giftList[i].size}}", data-color="{{giftList[i].color}}", 
+		data-storelink="{{giftList[i].storeLink}}", data-notes="{{giftList[i].notes}}">
+			<p>{{giftList[i].name}}</p>
+			<p class="button-1" onclick="openStoreLink(this.parentNode.dataset.storelink)">BUY</p>
+		</div>
+	{%- endfor %}
 </section>
-<section class="main-content content-4">
-	<h1>{{username}}'s Gift List</h1>
-	<div class="gift-list gift-list-public">
-		{% for i in range(0, giftList.length) -%}
-			<div class="gift gift-public">
-				<i class="far fa-arrow-alt-circle-down openGiftButton" onclick="openGift({{i}}); toggleImage({{i}})"></i>
-				<h2>
-                    {% if giftList[i].itemName == ""%}
-                        GIFT
-                    {% else %}
-                        {{giftList[i].itemName}}
-                    {% endif %}
-				</h2>
-				<div class="gift-content gift-content-public">
-					<div class="input-box">
-						<input type="text" class="input-name" value="{{giftList[i].notes}}" readonly>
-						<label>NOTES</label>
-					</div>
-					<div class="input-box">
-						<input type="text" class="input-name" value="{{giftList[i].price}}" readonly>
-						<label>PRICE</label>
-					</div>
-					<div class="input-box">
-						<input type="text" class="input-name" value="{{giftList[i].quantity}}" readonly>
-						<label>QUANTITY</label>
-					</div>
-					<div class="input-box">
-						<input type="text" class="input-name" value="{{giftList[i].size}}" readonly>
-						<label>SIZE</label>
-					</div>
-					{% if giftList[i].storeLink == "" or giftList[i].storeLink == "Invalid Url was submitted" %}
-						<div class="btn-type2"><del>BUY</del></div>
-					{% else %}
-						<a class="btn-type1" href="{{giftList[i].storeLink}}" target="_blank">BUY</a>
-					{% endif%}
-				</div>
-			</div>
-		{%- endfor %}
-	</div>
+
+<section id="pop-up-bg">
+	<!-- show gift information -->
+	{% include 'show_gift.njk' %}
 </section>
+
 {% endblock %}
 
 {% block script %}
 <script>
-	var publicGiftList = document.getElementsByClassName("gift-list-public")[0];
-	var publicGifts = publicGiftList.getElementsByClassName("gift-public");
-	function openGift(index) {
-		let giftContent = publicGifts[index].getElementsByClassName("gift-content")[0];
-		let currGift = publicGifts[index];
-		let giftContentHeight = giftContent.scrollHeight;
-		let currGiftHeight = currGift.scrollHeight;
-		currGift.style.height = currGiftHeight;
-		if(giftContent.style.visibility === "visible") {   // close the form
-			let newHeight = currGiftHeight - giftContentHeight;
-			giftContent.style.transition = "0s";
-			giftContent.style.opacity = 0;
-			giftContent.style.visibility = "hidden";
-			currGift.style.height = `${newHeight}px`;
-		} else {    // open the form
-			let newHeight = currGiftHeight;
-			currGift.style.height = `${newHeight}px`;
-			giftContent.style.transition = "2s ease";
-			giftContent.style.opacity = 1;
-			giftContent.style.visibility = "visible";
+	var popUpBg = document.getElementById("pop-up-bg");
+	var showGiftPopUp = document.getElementById("show-gift");
+	var giftList = document.getElementById("gift-list");
+	var giftNode = document.getElementsByClassName("gift")[0];
+	var index = document.getElementsByClassName("index");
+	var currentGift;
+
+	/*------------------------------------------ 
+	pop up
+	------------------------------------------*/
+	// allows for the pop up to be closed by clicking outside of the pop up
+	window.onclick = function(event) {
+		if(event.target == popUpBg) {
+			popUpBg.style.display = "none";
+			showGiftPopUp.style.display = "none";
+			currentGift = null;
 		}
 	}
 
-	function toggleImage(index, privacy) {
-        let openGiftBtn = publicGifts[index].getElementsByClassName("openGiftButton")[0]; 
-        if (openGiftBtn.className == "far fa-arrow-alt-circle-down openGiftButton") {
-            openGiftBtn.className = "far fa-arrow-alt-circle-up openGiftButton";
-        } else {
-            openGiftBtn.className = "far fa-arrow-alt-circle-down openGiftButton"
-        }
-    }
+	// display information about a particular gift
+	function showGift(gift) {
+		// so the pop up doesn't show up when clicking the "buy" button
+		if (event.target != event.currentTarget) { return; }
 
-	// creates a selectable element with the user's link
-	var $copyText = $("<input>", {id: "foo", class: "profile-link", value: `${window.location}`});
-	// location for the $copyText to be appended to
-	var	$copyTextContainer = $(".main-content:eq(0)");
-	
+		popUpBg.style.display = "block";
+		showGiftPopUp.style.display = "grid";
+		let giftAttributes = document.getElementById("show-gift").children;
+		let inputVals = Object.values(gift.dataset);
+
+		// gets the values from the html element
+		for (i = 0; i < inputVals.length; i++) {
+			giftAttributes[i].children[1].value = inputVals[i + 1];     // +1 to exclude index from dataset
+		}
+		currentGift = gift;
+	}
+
 	function copyGiftListLink() {
-		$copyTextContainer.append($copyText);
-		$copyText.select();
-		document.execCommand("copy");
-		$copyTextContainer.remove($copyText);
+		if (navigator.clipboard) {
+			navigator.clipboard.writeText(`${window.location}`).then(() => {
+			console.log('Copied to clipboard successfully.');
+		}, (err) => {
+			console.log('Failed to copy the text to clipboard.', err);
+		});
+		} else if (window.clipboardData) {
+			window.clipboardData.setData("Text", input);
+		}
+	}
+
+	function openStoreLink(url) {
+		window.open(url, "_blank").focus();
 	}
 </script>
 {% endblock %}

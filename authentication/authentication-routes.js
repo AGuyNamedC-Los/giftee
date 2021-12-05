@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require("express");
 const bcrypt = require('bcrypt');
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require('uuid');
 const sendMail = require('./sendMail');
 const db = require("../db");
 
@@ -30,7 +30,7 @@ router.post("/sign_up_status", urlencodedParser, async (req, res) => {
     else if (!hasSpaces.test(username)) { errorMessage = "Username can't contain spaces"; badUsername = true;}
 
     if (badUsername) {
-        res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: errorMessage, buttonMsg: "BACK TO SIGN UP PAGE"});
+        res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: errorMessage, buttonText: "Back to sign up page"});
         return;
     }
 
@@ -46,7 +46,7 @@ router.post("/sign_up_status", urlencodedParser, async (req, res) => {
     else if (!hasUppercase.test(password)) { errorMessage = "password must contain a uppercase letter"; badPassword = true; }
 
     if (badPassword) {
-        res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: errorMessage, buttonMsg: "BACK TO SIGN UP PAGE"});
+        res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: errorMessage, buttonText: "Back to sign up page"});
         return;
     }
 
@@ -66,12 +66,15 @@ router.post("/sign_up_status", urlencodedParser, async (req, res) => {
                     RETURNING *
                     `, [uuidv4(), "temp_user", email, username, firstname, lastname, hash, emailCode, [], 0, [], 0]
                 );
-                sendMail(email, emailCode);
+
+                const url = new URL(req.protocol + '://' + req.get('host') + "/api/authenticate/activate/" + email + "&" + emailCode);
+                sendMail(url, email);
+                
                 req.session.user = {role: "temp_user", firstname: firstname, lastname: lastname, email: email, username: username};
-                res.render("response.njk", {user: req.session.user, title: "Sign Up Success!", link: "/", message: "Thanks for signing up! Be sure to enter the confirmation code you received in your email to finish making your profile", buttonMsg: "BACK TO HOME PAGE"});
+                res.render("response.njk", {user: req.session.user, title: "Sign Up Success!", link: "/", message: "Thanks for signing up! Be sure to enter the confirmation code you received in your email to finish making your profile", buttonText: "Back to homepage"});
             } catch (err) {
                 console.log(err);
-                res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: "That username or email has already been taken!" , buttonMsg: "BACK TO SIGN UP PAGE"});
+                res.render("response.njk", {user: req.session.user, title: "Sign Up Error", link: "/sign-up", message: "That username or email has already been taken!" , buttonText: "Back to sign up page"});
             }
         });
     });
@@ -89,35 +92,37 @@ router.post('/login_status', urlencodedParser, async (req, res) => {
         );
         const user = dbResult.rows[0];
 
+        // check if user was found then check their password
         if (user) {
             bcrypt.compare(password, user.password, async function(err, passwordMatch) {
                     if (passwordMatch) {    
                         req.session.user = {role: user.role, firstname: user.firstname, lastname: user.lastname, email: user.email, username: user.username};
-                        res.render("response.njk", {user: req.session.user, title: "Login Successful", link: "/api/profile", message: "Successfully Logged In", buttonMsg: "GO TO GIFT LIST"});
+                        res.render("response.njk", {user: req.session.user, title: "Login Successful", link: "/api/profile", message: "Successfully Logged In", buttonText: "Go to gift list"});
                     } else {
-                        res.render("response.njk", {user: req.session.user, title: "Login Error", link: "/login", message: "Incorrect email or password", buttonMsg: "BACK TO LOGIN"});
+                        res.render("response.njk", {user: req.session.user, title: "Login Error", link: "/login", message: "Incorrect email or password", buttonText: "Back to login page"});
                     }
             });
         } else {
             req.session.user = {role: "guest", firstname: "", lastname: "", email: "", username: ""};
-            res.render("response.njk", {user: req.session.user, title: "Login Error", link: "/login", message: "Incorrect email or password", buttonMsg: "BACK TO LOGIN"});
+            res.render("response.njk", {user: req.session.user, title: "Login Error", link: "/login", message: "Incorrect email or password", buttonText: "Back to login page"});
         }
     } catch (error) {
         req.session.user = {role: "guest", firstname: "", lastname: "", email: "", username: ""};
-        res.render("response.njk", {user: req.session.user, title: "Login Error", link: "/login", message: "Error: " + err, buttonMsg: "BACK TO SIGN UP PAGE"});
+        res.render("response.njk", {user: req.session.user, title: "Login Error", link: "/login", message: "Error: " + err, buttonText: "Back to sign up page"});
     }
 });
 
 router.post('/logout_status', urlencodedParser, async (req, res) => {
 	req.session.user = {role: "guest", firstname: "", lastname: "", email: "", username: ""};
-	res.render("response.njk", {user: req.session.user, title: "Logged Out", link: "/", message: "Successfully Logged Out", buttonMsg: "BACK TO HOME"});
+	res.render("response.njk", {user: req.session.user, title: "Logged Out", link: "/", message: "Successfully Logged Out", buttonText: "Back to homepage"});
 });
 
-router.post('/email_confirmation_status', urlencodedParser, async (req, res) => {
+router.get("/activate/:parameter1&:parameter2", urlencodedParser, async (req, res) => {
     try {
-        const {email, firstname, lastname, username} = req.session.user;
-        const emailCode = req.body.emailConfirmationCode;
-    
+        const email = req.params.parameter1;
+        const emailCode = req.params.parameter2;
+
+        // if email code was correct then upgrade them to a "user"
         let dbResult = await db.query(
             `
             UPDATE users
@@ -126,15 +131,16 @@ router.post('/email_confirmation_status', urlencodedParser, async (req, res) => 
             RETURNING *
             `, ["user", email, emailCode]
         );
-    
+
         if (dbResult.rows.length == 1) {
+            const {firstname, lastname, username} = dbResult.rows[0];
             req.session.user = {role: "user", firstname: firstname, lastname: lastname, email: email, username: username};
-            res.render("response.njk", {user: req.session.user, title: "Email Confirmed", link: "/api/profile", message: "Your profile is now complete", buttonMsg: "GO TO GIFTLIST"});
+            res.render("response.njk", {user: req.session.user, title: "Email Confirmed", link: "/api/profile", message: "Your profile is now complete", buttonText: "Go to gift list"});
         } else {
-            res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "error: " + err, buttonMsg: "BACK TO HOME PAGE"});
-        }   
-    } catch (err) {
-        res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "error: " + err, buttonMsg: "BACK TO HOME PAGE"});
+            res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "Sorry, the email confirmation code you entered is not valid!", buttonText: "Back to homepage"});
+        }
+    } catch (error) {
+        res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "error: " + error, buttonText: "Back to homepage"});
     }
 });
 
@@ -150,13 +156,15 @@ router.post('/resend_confirmation_code', urlencodedParser, async (req, res) => {
         )
     
         if (dbResult.rows.length == 1) {
-            sendMail(email, dbResult.rows[0].code);
-            res.render("response.njk", {user: req.session.user, title: "Code Re-Sent", link: "/", message: "Email confirmation code has been resent to your email address!", buttonMsg: "BACK TO HOMEPAGE"});
+            //sendMail(email, dbResult.rows[0].code);
+            const url = new URL(req.protocol + '://' + req.get('host') + "/api/authenticate/activate/" + email + "&" + dbResult.rows[0].code);
+            sendMail(url, email);
+            res.render("response.njk", {user: req.session.user, title: "Code Re-Sent", link: "/", message: "Email confirmation code has been resent to your email address!", buttonText: "Back to homepage"});
         } else {
-            res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "error: " + err, buttonMsg: "BACK TO HOME PAGE"});
+            res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "error: " + err, buttonText: "Back to homepage"});
         }
     } catch (error) {
-        res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "error: " + err, buttonMsg: "BACK TO HOME PAGE"});
+        res.render("response.njk", {user: req.session.user, title: "Error", link: "/", message: "error: " + err, buttonText: "Back to homepage"});
     }
 });
 

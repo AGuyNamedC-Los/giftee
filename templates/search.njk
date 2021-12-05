@@ -5,18 +5,13 @@
 {% endblock %}
 
 {% block main %}
-	<section class="main-content">
-		<div class="input-box">
-			<input type="text" id="search-bar" name="searchText" required>
-			<label><i class="fas fa-search"></i> Search For Users</label>
-		</div>
-	</section>
+	<div id="search-title">
+		<input type="text" id="search-bar" name="searchText" placeholder="Search for users">
+	</div>
 
-	<section class="main-content">
-		<div id="usernameList">
+	<div id="usernameList">
 			
-		</div>
-	</section>
+	</div>
 {% endblock %}
 
 {% block script %}
@@ -51,7 +46,7 @@
 				).join(" ");
 			usernameList.innerHTML = html;
 		} else {
-			usernameList.innerHTML = "no users with that name";
+			usernameList.innerHTML = `<a class="search-result">No users with that name</a>`;
 		}
 	}
 

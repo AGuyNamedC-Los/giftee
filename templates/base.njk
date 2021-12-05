@@ -3,9 +3,19 @@
     <head>
         <meta charset="utf-8">
         {% block metaStuff %}{% endblock %}
-		<link href="/giftee.css" type="text/css" rel="stylesheet">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		{# <link href="/giftee2.css" type="text/css" rel="stylesheet">
+		{# <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"> #}
+        {# <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://kit.fontawesome.com/f4fe445c36.js" crossorigin="anonymous"></script> #}
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/giftee2.css">
+        <script src="https://kit.fontawesome.com/f4fe445c36.js" crossorigin="anonymous"></script>
+        <!-- FONT -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
 
         <!-- Open Graph -->
         <meta property="og:image" content="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png"/>
@@ -22,8 +32,15 @@
         <link rel="manifest" href="https://raw.githubusercontent.com/AGuyNamedC-Los/gift-ee/master/public/website_images/giftee-logo.png" />
     </head>
     <body>
-		<main>
         {% include 'nav-bar.njk' %}
+        <main>
+            {% if (user.role == "temp_user") %}
+                <section class="content-3">
+                    <form id="resend" action="/api/authenticate/resend_confirmation_code" method="POST" style="text-align:center;">
+                        <button class="button-3" type="submit">RESEND CONFIRMATION CODE</button>
+                    </form>
+                </section>
+            {% endif %}
 		{% block main %}{% endblock %}
 		</main>
     </body>

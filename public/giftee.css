@@ -12,12 +12,13 @@
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    font-family: 'Nunito', sans-serif;
 }
 
 body {
     margin: 0;
     padding: 0;
-    font-family: "GTWalsheim", system-ui, sans-serif;
+    /* font-family: "GTWalsheim", system-ui, sans-serif; */
     text-rendering: optimizelegibility;
     background-color: var(--background-color);
 }
@@ -67,9 +68,9 @@ nav div {
 }
 
 /*------------------------------------------ 
-    landing page
+    format for content
 ------------------------------------------*/
-.main-content {
+.content {
     background-color: white;
     border: 1px solid #DFE1E6;
     max-width: 40rem;
@@ -79,8 +80,7 @@ nav div {
     text-align: center;
 }
 
-.content-1 {text-align: left; max-width: 30rem;}
-.content-2 {max-width: 30rem;}
+.content-type-1 {max-width: 30rem;}
 
 /*------------------------------------------ 
     add gift form 
